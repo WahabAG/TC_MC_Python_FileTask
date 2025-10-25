@@ -1,26 +1,32 @@
 import csv
-import logging
-# logging cofigurations
-logging.basicConfig(
-    filename="app.log",              # Log file name
-    level=logging.DEBUG,             # Log all levels DEBUG and above
-    format="%(asctime)s - %(levelname)s - %(message)s" # Format for logging
-)
 
-
-with open('attendance_score.csv', newline='') as file:
+with open('attendance_score.csv', 'r') as file:
 
     csv_reader = csv.DictReader(file)  # Create DictReader
 
-    student_list = list(csv_reader)  # List to store dictionaries
+    student_list = []  # List to store dictionaries
+    for row in csv_reader:
+        student_list.append(row) #appending all dictionary to a list
 
-def average_score(data):
-    """Calculates the average of the 'Score' column in a CSV DictReader."""
+
+
+# working on average calculation
+def average(data):
+# calculating average of score in the score column
     try:
-        scores = [float(row['Score']) for row in data if row['Score']]
+        # Extract all valid scores into a list
+        scores = []
+        for student in data:
+            value = student.get("Score")
+            if value:  # check it's not empty or None
+                scores.append(float(value))  # convert to float
+
         if not scores:
             raise ValueError("No valid scores found.")
+
+        # Compute average
         return sum(scores) / len(scores)
+
     except KeyError:
         print("Error: The 'Score' column is missing in the CSV file.")
         return None
@@ -28,11 +34,7 @@ def average_score(data):
         print(f"Value error: {e}")
         return None
 
-
-avg = average_score(student_list)
+avg = average(student_list)
 if avg is not None:
     print(f"Average Score: {avg:.2f}")
-
-
-
 # to run this code use =>>   python practice.py
