@@ -17,9 +17,9 @@ def average(data):
         # Extract all valid scores into a list
         scores = []
         for student in data:
-            value = student.get("Score")
-            if value:  # check it's not empty or None
-                scores.append(float(value))  # convert to float
+            value = student.get("Score") # check it's not empty or None
+            if value:  
+                scores.append(float(value))  # convert to float and append to score list
 
         if not scores:
             raise ValueError("No valid scores found.")
@@ -27,9 +27,6 @@ def average(data):
         # Compute average
         return sum(scores) / len(scores)
 
-    except KeyError:
-        print("Error: The 'Score' column is missing in the CSV file.")
-        return None
     except ValueError as e:
         print(f"Value error: {e}")
         return None
