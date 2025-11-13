@@ -1,4 +1,5 @@
 import csv
+import logging
 
 with open('attendance_score.csv', 'r') as file:
 
@@ -10,10 +11,18 @@ with open('attendance_score.csv', 'r') as file:
 
 
 
+logging.basicConfig(
+    filename="app.log",              # Log file name
+    level=logging.DEBUG,             # Log all levels DEBUG and above
+    format="%(asctime)s - %(levelname)s - %(message)s" # Format for logging
+)
+
+
 # working on average calculation
 def average(data):
 # calculating average of score in the score column
     try:
+        logging.info("Program started")
         # Extract all valid scores into a list
         scores = []
         for student in data:
@@ -23,15 +32,19 @@ def average(data):
 
         if not scores:
             raise ValueError("No valid scores found.")
+        logging.info("Score calculated")
 
         # Compute average
         return sum(scores) / len(scores)
-
+        
     except ValueError as e:
+        logging.error(ValueError)
         print(f"Value error: {e}")
         return None
 
 avg = average(student_list)
 if avg is not None:
     print(f"Average Score: {avg:.2f}")
+
+
 # to run this code use =>>   python practice.py
